@@ -190,7 +190,7 @@ class Confide
     /**
      * Calls throttleIdentity of the loginThrottler and returns false
      * if the throttleCount is grater then the 'throttle_limit' config.
-     * Also sleeps a little in order to avoid dicionary attacks.
+     * Also sleeps a little in order to avoid dictionary attacks.
      *
      * @param mixed $identity.
      *
@@ -201,7 +201,11 @@ class Confide
         $count = $this->loginThrottler
             ->throttleIdentity($identity);
 
-        if ($count >= $this->app->make('config')->get('confide::throttle_limit')) {
+        $throttle_limit = $this->app->make('config')->get('confide.throttle_limit');
+        // Make it easy to notice that retrieving throttle_limit didn't work
+        assert(isset($throttle_limit),'Throttle limit could not be retrieved from config');
+
+        if ($count >= $throttle_limit) {
             return false;
         }
 
@@ -292,7 +296,7 @@ class Confide
      */
     public function makeLoginForm()
     {
-        return $this->app->make('view')->make($this->app->make('config')->get('confide::login_form'));
+        return $this->app->make('view')->make($this->app->make('config')->get('confide.login_form'));
     }
 
     /**
@@ -302,7 +306,7 @@ class Confide
      */
     public function makeSignupForm()
     {
-        return $this->app->make('view')->make($this->app->make('config')->get('confide::signup_form'));
+        return $this->app->make('view')->make($this->app->make('config')->get('confide.signup_form'));
     }
 
     /**
@@ -312,7 +316,7 @@ class Confide
      */
     public function makeForgotPasswordForm()
     {
-        return $this->app->make('view')->make($this->app->make('config')->get('confide::forgot_password_form'));
+        return $this->app->make('view')->make($this->app->make('config')->get('confide.forgot_password_form'));
     }
 
     /**
@@ -323,7 +327,7 @@ class Confide
     public function makeResetPasswordForm($token)
     {
         return $this->app->make('view')->make(
-            $this->app->make('config')->get('confide::reset_password_form'),
+            $this->app->make('config')->get('confide.reset_password_form'),
             array('token' => $token)
         );
     }
