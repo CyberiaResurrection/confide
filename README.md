@@ -49,7 +49,7 @@ to be confirmed to be able to login to the website._
 In the `require` key of `composer.json` file add the following
 
 ```json
-"zizaco/confide": "~4.3@dev"
+"zizaco/confide": "dev-master"
 ```
 
 Run the Composer update comand
